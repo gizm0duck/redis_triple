@@ -12,13 +12,11 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    
-
 ## Usage
 
-  Run script/load_data.rb and wait several minutes.  Check the output.
+    $ script/load_data.rb 
+  Wait several minutes  
+  Check the output, it should give you some insight into the data collected
 
 ## Contributing
 
