@@ -14,8 +14,8 @@ And then execute:
 
 ## Usage
 
-    $ script/load_data.rb 
-  Wait several minutes  
+    $ ruby script/load_data.rb
+  Wait several minutes
   Check the output, it should give you some insight into the data collected
 
 ## Contributing
