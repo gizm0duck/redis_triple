@@ -14,11 +14,11 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install redis_triple
+    
 
 ## Usage
 
-TODO: Write usage instructions here
+  Run script/load_data.rb and wait several minutes.  Check the output.
 
 ## Contributing
 
