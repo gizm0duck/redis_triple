@@ -30,7 +30,7 @@ module RedisTriple
       redis.pipelined do |r|
         r.hmset("#{to_id(object)}:#{predicate}", to_id(subject), (d << ts).join('|'))
         # reverse lookup
-        r.zadd("#{to_id(subject)}:#{predicate}", ts, to_id(object))
+        r.zadd("#{predicate}:#{to_id(subject)}", ts, to_id(object))
       end
     end
     
