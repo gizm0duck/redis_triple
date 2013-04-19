@@ -5,9 +5,7 @@ triple.redis.flushdb
 filename = File.join(File.dirname(__FILE__), "board_views.csv")
 File.open(filename).each_line do |l|
   bid, guid, ts = l.split(",")
-  board = Board.new(bid)
-  user = User.new(guid)
-  triple.add(user, 'views', board, ts)
+  triple.add("User:#{guid}", 'views', "Board:#{bid}", ts)
 end
 
 uid = '491e5a60-61b0-0130-26ab-123139242bec'

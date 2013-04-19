@@ -5,9 +5,7 @@ triple.redis.flushdb
 filename = File.join(File.dirname(__FILE__), "user_subscriptions.csv")
 File.open(filename).each_line do |l|
   oid, tid, ts = l.split(",")
-  owner = User.new(oid)
-  target = User.new(tid)
-  triple.add(owner, 'follows', target, ts)
+  triple.add("User:#{oid}", 'follows', "User:#{tid}", ts)
 end
 
 # uid = '491e5a60-61b0-0130-26ab-123139242bec'
