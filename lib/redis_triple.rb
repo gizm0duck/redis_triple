@@ -17,5 +17,12 @@ module RedisTriple
       end
     end
     
+    def remove(subject, predicate, object)
+      redis.pipelined do |r|
+        r.hdel("#{object}:#{predicate}", subject)
+        # reverse lookup
+        r.zrem("#{predicate}:#{subject}", object)
+      end
+    end
   end
 end
