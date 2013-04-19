@@ -1,21 +1,4 @@
 require "redis_triple/version"
-
-User = Struct.new(:id)
-Board = Struct.new(:id)
-Learning = Struct.new(:id)
-
-def create_user
-  User.new(rand(10000))
-end
-
-def create_board
-  Board.new(rand(10000))
-end
-
-def create_learning
-  Learning.new(rand(10000))
-end
-
 module RedisTriple
   class Base
     require 'redis'
@@ -26,16 +9,13 @@ module RedisTriple
     
     def add(subject, predicate, object, timestamp)
       ts = timestamp.to_i
-      d = redis.hget("#{to_id(object)}:#{predicate}", to_id(subject)).to_s.split('|')
+      d = redis.hget("#{object}:#{predicate}", subject).to_s.split('|')
       redis.pipelined do |r|
-        r.hmset("#{to_id(object)}:#{predicate}", to_id(subject), (d << ts).join('|'))
+        r.hmset("#{object}:#{predicate}", subject, (d << ts).join('|'))
         # reverse lookup
-        r.zadd("#{predicate}:#{to_id(subject)}", ts, to_id(object))
+        r.zadd("#{predicate}:#{subject}", ts, object)
       end
     end
     
-    def to_id(obj)
-      "#{obj.class}:#{obj.id}"
-    end
   end
 end
