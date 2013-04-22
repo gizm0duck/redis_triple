@@ -7,12 +7,18 @@ module RedisTriple
       @redis ||= Redis.new(db: 11)
     end
     
+    # example: triple.add "User:1", "viewed", "Board:123"
     def add(subject, predicate, object, timestamp)
       ts = timestamp.to_i
       d = redis.hget("#{object}:#{predicate}", subject).to_s.split('|')
       redis.pipelined do |r|
-        r.hmset("#{object}:#{predicate}", subject, (d << ts).join('|'))
-        # reverse lookup
+        # multiple storage solutions so we do not have to perform wildcard searches across the key space
+        
+        # all the times this triple has happened per object/predicate/subject pair
+        r.hmset("#{object}:#{predicate}", subject, (d << ts).join('|')) 
+         # all the times this triple has happened
+        r.sadd("#{subject}:#{predicate}:#{object}", ts)
+        # all objects for this subject/predicate pair
         r.zadd("#{predicate}:#{subject}", ts, object)
       end
     end
@@ -20,7 +26,6 @@ module RedisTriple
     def remove(subject, predicate, object)
       redis.pipelined do |r|
         r.hdel("#{object}:#{predicate}", subject)
-        # reverse lookup
         r.zrem("#{predicate}:#{subject}", object)
       end
     end
