@@ -20,6 +20,8 @@ module RedisTriple
         r.sadd("#{subject}:#{predicate}:#{object}", ts)
         # all objects for this subject/predicate pair
         r.zadd("#{predicate}:#{subject}", ts, object)
+        # all subjects for this predicate
+        r.sadd predicate, subject
         # all activity for this subject
         r.zadd(subject, ts, "#{predicate}:#{object}")
       end
