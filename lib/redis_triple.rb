@@ -4,7 +4,7 @@ module RedisTriple
     require 'redis'
     attr_reader :redis
     def initialize(redis=nil)
-      @redis ||= Redis.new(db: 11)
+      @redis = redis || Redis.new(db: 11)
     end
     
     # example: triple.add "User:1", "viewed", "Board:123"
